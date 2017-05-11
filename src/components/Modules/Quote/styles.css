@@ -1,0 +1,40 @@
+.quote {
+  display: block;
+  width: 100vw;
+  max-width: 900px;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  margin: 0;
+}
+
+@media screen and (min-width: 640px) {
+  .quote {
+    width: 80vw;
+  }
+}
+
+.quote__sentence {
+  display: block;
+  font-family: Lobster, Georgia, Arial, Helvetica;
+  font-weight: normal;
+  font-size: 3rem;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+}
+
+.quote__author {
+  display: block;
+  font-family: Lobster, Georgia, Arial, Helvetica;
+  font-weight: normal;
+  font-size: 1.3rem;
+  text-align: right;
+  padding: 0;
+  margin: 20px 40px 0 0;
+  color: #fff;
+}
