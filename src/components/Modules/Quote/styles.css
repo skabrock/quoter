@@ -23,18 +23,45 @@
   font-weight: normal;
   font-size: 3rem;
   text-align: center;
-  padding: 0;
+  padding: 20px 0;
   margin: 0;
   color: #fff;
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, .5);
+  position: relative;
+}
+.quote__sentence:hover .quote__save-btn{
+  display: block;
 }
 
 .quote__author {
   display: block;
-  font-family: Lobster, Georgia, Arial, Helvetica;
+  font-family: 'PT Sans', Helvetica, Arials, sans-serif;
   font-weight: normal;
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   text-align: right;
   padding: 0;
-  margin: 20px 40px 0 0;
+  margin: 0px 40px;
   color: #fff;
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, .5);
+}
+
+.quote__save-btn {
+  display: none;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  border: none;
+  background: #fff;
+  border-radius: 3px;
+  font-size: 26px;
+  color: #222;
+  cursor: pointer;
+  padding: 0;
+  position: absolute;
+  top: -14px;
+  left: 0px;
+  outline: none;
+}
+.quote__save-btn:hover {
+  color: #000;
 }
