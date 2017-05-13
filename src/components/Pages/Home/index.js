@@ -18,6 +18,8 @@ class Home extends Component {
   }
 
   componentWillMount() {
+    this.props.getQuotes();
+
     const quote_id = this.props.match.params.quote_id;
     if (!quote_id) {
       this.goToNextQuote();
@@ -102,13 +104,13 @@ class Home extends Component {
 
   render() {
     const { saturation, lightnes } = this.state;
-    const { quotes } = this.props;
+    const { quotes, quotes_loaded } = this.props;
     const requested_quote_id = this.props.match.params.quote_id;
     const currentQuote = quotes[requested_quote_id] || null;
 
     const getBgColor = () => {
       if (currentQuote) {
-        return stringToColor(currentQuote.body, 360, saturation, lightnes);
+        return stringToColor(currentQuote.quote, 360, saturation, lightnes);
       }
       return '#333';
     }
@@ -122,50 +124,67 @@ class Home extends Component {
     }
 
     return (
-      <div className="home" style={{backgroundColor: getBgColor()}}>
-        <div className="home__content">
-          {
-            currentQuote
-              ? <Quote currentQuote={currentQuote} onCopySuccess={this.onCopySuccess} />
-              : <Welcome goToNextQuote={this.goToNextQuote} />
-          }
-        </div>
-        <div className="home__panel">
-          <button 
-            title="Предыдущая цитата"
-            className="home__btn" 
-            onClick={this.goToPrevQuote} 
-            style={{background: getBgColor()}}>
-            <i className="fa fa-chevron-left" aria-hidden="true" />
-          </button>
-          <CopyToClipboard text={currentQuote.body} onCopy={this.onCopySuccess}>
+      quotes_loaded ?
+        <div className="home" style={{backgroundColor: getBgColor()}}>
+          <div className="home__content">
+            {
+              currentQuote
+                ? <Quote currentQuote={currentQuote} onCopySuccess={this.onCopySuccess} />
+                : <Welcome goToNextQuote={this.goToNextQuote} />
+            }
+          </div>
+          <div className="home__panel">
             <button 
-              title="Сохранить цитату в буфер обмена"
+              title="Предыдущая цитата"
               className="home__btn" 
+              onClick={this.goToPrevQuote} 
               style={{background: getBgColor()}}>
-              <i className="fa fa-floppy-o" aria-hidden="true"/>
+              <i className="fa fa-angle-left" aria-hidden="true" />
             </button>
-          </CopyToClipboard>
-          <button 
-            title="Следующая цитата"
-            className="home__btn" 
-            onClick={this.goToNextQuote} 
-            style={{background: getBgColor()}}>
-            <i className="fa fa-chevron-right" aria-hidden="true" />
-          </button>
+            <CopyToClipboard text={currentQuote.quote} onCopy={this.onCopySuccess}>
+              <button 
+                title="Сохранить цитату в буфер обмена"
+                className="home__btn" 
+                style={{background: getBgColor()}}>
+                <i className="fa fa-floppy-o" aria-hidden="true"/>
+              </button>
+            </CopyToClipboard>
+            <button 
+              title="Следующая цитата"
+              className="home__btn" 
+              onClick={this.goToNextQuote} 
+              style={{background: getBgColor()}}>
+              <i className="fa fa-angle-right" aria-hidden="true" />
+            </button>
+          </div>
+          <NotificationSystem ref="notificationSystem" style={notificationCustomStyles} />
         </div>
-        <NotificationSystem ref="notificationSystem" style={notificationCustomStyles} />
-      </div>
+      : null
     )
   }
 }
 
 export default connect(
   state => ({
-    quotes: state.quotes,
+    quotes: state.quotes.quotes,
+    quotes_loaded: state.quotes.quotes_loaded,
     appHistory: state.history,
   }), 
   dispatch => ({
+    getQuotes: () => {
+      const getData = (url, callback) => {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
+                callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", url, true);
+        xmlHttp.send(null);
+      }
+      getData("http://localhost:8082/quotes", (payload) => {
+        dispatch({type: 'SET_QUOTES', payload: JSON.parse(payload)});
+      })
+    },
     onAddHistory: payload => {
       dispatch({type: 'ADD_HISTORY_ITEM', payload})
     },

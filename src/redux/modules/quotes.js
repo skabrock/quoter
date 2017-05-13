@@ -1,17 +1,16 @@
 import { createReducer } from '../utils/createReducer';
-import data from '../../data';
 
-const initialState = data;
+const initialState = {
+  quotes: {},
+  quotes_loaded: false
+};
 
 export default createReducer({
 
-  ADD_QUOTE: (state, { id, body, author }) => ([
+  SET_QUOTES: (state, { payload }) => ({
     ...state,
-    {
-      id,
-      author,
-      quote: body
-    }
-  ])
+    quotes: payload,
+    quotes_loaded: true
+  })
 
 }, initialState);
