@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import NotificationSystem from 'react-notification-system';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import stringToColor from '../../../modules/stringToColor';
@@ -105,8 +105,6 @@ class Home extends Component {
     const { quotes } = this.props;
     const requested_quote_id = this.props.match.params.quote_id;
     const currentQuote = quotes[requested_quote_id] || null;
-    console.log(this.props.match)
-    console.log(currentQuote)
 
     const getBgColor = () => {
       if (currentQuote) {
@@ -155,10 +153,6 @@ class Home extends Component {
             style={{background: getBgColor()}}>
             <i className="fa fa-angle-right" aria-hidden="true" />
           </button>
-          <Link to="/1">1</Link>
-          <Link to="/2">2</Link>
-          <Link to="/3">3</Link>
-          <Link to="/4">4</Link>
         </div>
         <NotificationSystem ref="notificationSystem" style={notificationCustomStyles} />
       </div>
@@ -166,7 +160,7 @@ class Home extends Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
     quotes: state.quotes.quotes,
     appHistory: state.history,
@@ -179,4 +173,4 @@ export default connect(
       dispatch({type: 'SET_HISTORY', payload})
     }
   })
-)(withRouter(Home));
+)(Home));
