@@ -121,7 +121,7 @@ class Home extends Component {
       }
     }
 
-    return (
+    return currentQuote &&
       <div className="home" style={{backgroundColor: getBgColor()}}>
         <div className="home__content">
           {
@@ -156,7 +156,6 @@ class Home extends Component {
         </div>
         <NotificationSystem ref="notificationSystem" style={notificationCustomStyles} />
       </div>
-    )
   }
 }
 

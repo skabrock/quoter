@@ -1,24 +1,34 @@
 .home__content {
   display: block;
   width: 100vw;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 50px);
   position: relative;
+}
+@media screen and (min-width: 640px) {
+  .home__content {
+    height: calc(100vh - 80px);
+  }
 }
 
 .home__panel {
   display: block;
   width: 100vw;
-  height: 80px;
+  height: 50px;
   background: rgba(0, 0, 0, .5);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 10px;
 }
+@media screen and (min-width: 640px) {
+  .home__panel {
+    height: 80px;
+  }
+}
 
 .home__btn {
   display: block;
-  height: 50px;
+  height: 44px;
   padding: 0 25px;
   margin: 0;
   border: none;
@@ -38,4 +48,9 @@
 }
 .home__btn+.home__btn {
   margin-left: 10px;
+}
+@media screen and (min-width: 640px) {
+  .home__btn {
+    height: 50px;
+  }
 }
