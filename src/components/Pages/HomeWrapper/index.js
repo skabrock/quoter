@@ -8,15 +8,8 @@ class HomeWrapper extends Component {
   }
 
   render() {
-    return(
-      <div>
-        {
-          this.props.quotes_loaded
-            ? <Home />
-            : null
-        }
-      </div>
-    )
+    return this.props.quotes_loaded &&
+      <Home />
   }
 }
 

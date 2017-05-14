@@ -28,18 +28,10 @@ class Home extends Component {
 
   componentDidMount() {
     document.addEventListener("keyup", this.handleShortcuts);
-
-    this._notificationSystem = this.refs.notificationSystem;
   }
 
   componentWillUnmount() {
     document.removeEventListener("keyup", this.handleShortcuts);
-  }
-
-  _notificationSystem = null;
-
-  _getNotificationSystemInstance = () => {
-    return this._notificationSystem
   }
 
   handleShortcuts = e => {
@@ -154,7 +146,7 @@ class Home extends Component {
             <i className="fa fa-angle-right" aria-hidden="true" />
           </button>
         </div>
-        <NotificationSystem ref="notificationSystem" style={notificationCustomStyles} />
+        <NotificationSystem ref={notificationSystem => {this._notificationSystem = notificationSystem}} style={notificationCustomStyles} />
       </div>
   }
 }
