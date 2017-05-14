@@ -1,17 +1,14 @@
-var static = require('node-static');
+var path = require('path');
+var http = require('http');
+var express = require('express');
 
-var fileServer = new static.Server('./build');
+var app = new express();
 
-require('http').createServer(function (request, response) {
-    request.addListener('end', function () {
-        fileServer.serve(request, response, function (err, result) {
-            if (err) { // There was an error serving the file
-                console.error("Error serving " + request.url + " - " + err.message);
+app.use(express.static(__dirname + '/build'));
+app.get('*', function response(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
-                // Respond to the client
-                response.writeHead(err.status, err.headers);
-                response.end();
-            }
-        });
-    }).resume();
-}).listen(3034);
+app.listen(3031, () => {
+  console.log('Server is listening on 3031 port');
+}); 
