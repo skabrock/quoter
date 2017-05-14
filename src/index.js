@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducer from './redux';
-import Home from './components/Pages/Home';
+import HomeWrapper from './components/Pages/HomeWrapper';
 import 'normalize.css/normalize.css';
 import './defaults.css';
 
@@ -14,7 +14,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <div>
-        <Route path="/:quote_id*" component={Home}/>
+        <Route path="/:quote_id*" component={HomeWrapper}/>
       </div>
     </Router>
   </Provider>,

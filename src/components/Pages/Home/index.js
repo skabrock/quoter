@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import NotificationSystem from 'react-notification-system';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import stringToColor from '../../../modules/stringToColor';
@@ -14,12 +14,10 @@ class Home extends Component {
   state = {
     saturation: 50,
     lightnes: 20,
-    appHistory: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
+    appHistory: [],
   }
 
   componentWillMount() {
-    this.props.getQuotes();
-
     const quote_id = this.props.match.params.quote_id;
     if (!quote_id) {
       this.goToNextQuote();
@@ -104,9 +102,11 @@ class Home extends Component {
 
   render() {
     const { saturation, lightnes } = this.state;
-    const { quotes, quotes_loaded } = this.props;
+    const { quotes } = this.props;
     const requested_quote_id = this.props.match.params.quote_id;
     const currentQuote = quotes[requested_quote_id] || null;
+    console.log(this.props.match)
+    console.log(currentQuote)
 
     const getBgColor = () => {
       if (currentQuote) {
@@ -124,42 +124,44 @@ class Home extends Component {
     }
 
     return (
-      quotes_loaded ?
-        <div className="home" style={{backgroundColor: getBgColor()}}>
-          <div className="home__content">
-            {
-              currentQuote
-                ? <Quote currentQuote={currentQuote} onCopySuccess={this.onCopySuccess} />
-                : <Welcome goToNextQuote={this.goToNextQuote} />
-            }
-          </div>
-          <div className="home__panel">
-            <button 
-              title="Предыдущая цитата"
-              className="home__btn" 
-              onClick={this.goToPrevQuote} 
-              style={{background: getBgColor()}}>
-              <i className="fa fa-angle-left" aria-hidden="true" />
-            </button>
-            <CopyToClipboard text={currentQuote.quote} onCopy={this.onCopySuccess}>
-              <button 
-                title="Сохранить цитату в буфер обмена"
-                className="home__btn" 
-                style={{background: getBgColor()}}>
-                <i className="fa fa-floppy-o" aria-hidden="true"/>
-              </button>
-            </CopyToClipboard>
-            <button 
-              title="Следующая цитата"
-              className="home__btn" 
-              onClick={this.goToNextQuote} 
-              style={{background: getBgColor()}}>
-              <i className="fa fa-angle-right" aria-hidden="true" />
-            </button>
-          </div>
-          <NotificationSystem ref="notificationSystem" style={notificationCustomStyles} />
+      <div className="home" style={{backgroundColor: getBgColor()}}>
+        <div className="home__content">
+          {
+            currentQuote
+              ? <Quote currentQuote={currentQuote} onCopySuccess={this.onCopySuccess} />
+              : <Welcome goToNextQuote={this.goToNextQuote} />
+          }
         </div>
-      : null
+        <div className="home__panel">
+          <button 
+            title="Предыдущая цитата"
+            className="home__btn" 
+            onClick={this.goToPrevQuote} 
+            style={{background: getBgColor()}}>
+            <i className="fa fa-angle-left" aria-hidden="true" />
+          </button>
+          <CopyToClipboard text={currentQuote.quote} onCopy={this.onCopySuccess}>
+            <button 
+              title="Сохранить цитату в буфер обмена"
+              className="home__btn" 
+              style={{background: getBgColor()}}>
+              <i className="fa fa-floppy-o" aria-hidden="true"/>
+            </button>
+          </CopyToClipboard>
+          <button 
+            title="Следующая цитата"
+            className="home__btn" 
+            onClick={this.goToNextQuote} 
+            style={{background: getBgColor()}}>
+            <i className="fa fa-angle-right" aria-hidden="true" />
+          </button>
+          <Link to="/1">1</Link>
+          <Link to="/2">2</Link>
+          <Link to="/3">3</Link>
+          <Link to="/4">4</Link>
+        </div>
+        <NotificationSystem ref="notificationSystem" style={notificationCustomStyles} />
+      </div>
     )
   }
 }
@@ -167,24 +169,9 @@ class Home extends Component {
 export default connect(
   state => ({
     quotes: state.quotes.quotes,
-    quotes_loaded: state.quotes.quotes_loaded,
     appHistory: state.history,
   }), 
   dispatch => ({
-    getQuotes: () => {
-      const getData = (url, callback) => {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function() { 
-            if (xmlHttp.readyState === 4 && xmlHttp.status === 200)
-                callback(xmlHttp.responseText);
-        }
-        xmlHttp.open("GET", url, true);
-        xmlHttp.send(null);
-      }
-      getData("http://localhost:8082/quotes", (payload) => {
-        dispatch({type: 'SET_QUOTES', payload: JSON.parse(payload)});
-      })
-    },
     onAddHistory: payload => {
       dispatch({type: 'ADD_HISTORY_ITEM', payload})
     },
